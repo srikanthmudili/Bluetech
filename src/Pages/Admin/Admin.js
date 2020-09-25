@@ -9,10 +9,10 @@ const Admin = (props) => {
     const [loading, setLoading] = useState(false);
     const [info, setInfo] = useState([]);
     const [users, setUsers] = useState([]);
-    var noUsers = true;
-    var noCourses = true
+   
     useEffect(
-        async () => {
+         () => {
+            async function Load(){
             const users = []
             const uRef = firebase.firestore().collection('users')
             await uRef.get().then((querySnapshot) => {
@@ -21,41 +21,43 @@ const Admin = (props) => {
 
                 });
                 setUsers(users)
-                if (users.length !== 0) {
-                    noUsers = false
-                }
+
 
             })
+           }
+           Load();
         },
         [props.location.state.Info]
     )
 
 
     const userData = (email) => {
-        
+
         Courses(email).then(
             (alldata) => {
                 setInfo(alldata);
                 setLoading(false);
             }
         )
-        
+
 
     }
 
 
     return (
         <div>
-            
+
             <Navbar
                 admin={"Admin"}
                 title={props.location.state.Info.name}
                 username={props.location.state.Info.email}
                 logoutButton={true}
             />
+            
             {
                 users ? (
                     <div className="Card">
+                        <h5 style={{textAlign:'center',color:'#2B2B52'}}>Users Information</h5>
                         <Accordion >
 
                             {
@@ -64,14 +66,14 @@ const Admin = (props) => {
 
                                         <Card key={i + 1}>
                                             <Card.Header>
-                                                <Accordion.Toggle as={Button} variant="link" onClick={() =>{ userData(obj.email);setLoading(true)}} eventKey={i + 1}>
+                                                <Accordion.Toggle as={Button} variant="link" onClick={() => { userData(obj.email); setLoading(true) }} eventKey={i + 1}>
                                                     {i + 1}.     {obj.name}
                                                 </Accordion.Toggle>
                                                 <h6 style={{ float: 'right' }}>{obj.email}</h6>
                                             </Card.Header>
                                             <Accordion.Collapse eventKey={i + 1}>
                                                 <Card.Body>
-                                                    <Table striped bordered hover size="sm" responsive>
+                                                    <Table striped bordered hover size="sm" key={i + 1} responsive>
                                                         <thead>
                                                             <tr>
                                                                 <th>#</th>
@@ -84,9 +86,9 @@ const Admin = (props) => {
                                                             </tr>
                                                         </thead>
                                                         {loading ? (
-                                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                                <Spinner animation="border" size={50} color="#0A79DF" />
-                                                            </div>
+
+                                                            <Spinner style={{ display: 'flex', justifyContent: 'center' }} animation="border" size={50} color="#0A79DF" />
+
                                                         ) : (
                                                                 <div />
                                                             )}{' '}
@@ -97,7 +99,7 @@ const Admin = (props) => {
                                                                     {
                                                                         info.map(
                                                                             (co, j) => (
-                                                                                <tr>
+                                                                                <tr key={j}>
                                                                                     <td>{j + 1}</td>
                                                                                     <td>{co.course_name}</td>
                                                                                     <td>{co.is_completed ? "Yes" : "No"}</td>
@@ -111,12 +113,8 @@ const Admin = (props) => {
                                                                     }
                                                                 </tbody>
                                                             ) : (
-                                                                    <div
-                                                                        style={{ marginTop: '5%', color: '#45CE30', textAlign: 'center' }}
-                                                                        className="justify-content-center"
-                                                                    >
-                                                                        <h5>No courses taken</h5>
-                                                                    </div>
+                                                                    <h5 style={{ marginTop: '5%', color: '#45CE30', textAlign: 'center' }}
+                                                                        className="justify-content-center">No courses taken</h5>
                                                                 )
                                                         }
 

@@ -11,7 +11,7 @@ import Attempted from './Tabs/Attempted';
 const Dashboard = (props) => {
     const [userInfo, setUserInfo] = useState({});
     const [userCourses, setUserCourses] = useState({});
-    var noCourses = false;
+    const [noCourses,setNocourses]=useState(false);
 
     useEffect(
         () => {
@@ -20,7 +20,7 @@ const Dashboard = (props) => {
                 setUserInfo(props.location.state.Info);
                 allCourses(props.location.state.Info.email).then((alldata) => {
                     if (Object.keys(alldata).length === 0) {
-                        noCourses = true;
+                        setNocourses(true)
                     }
                     setUserCourses(alldata);
                 });
