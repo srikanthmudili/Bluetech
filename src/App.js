@@ -10,7 +10,7 @@ function App() {
       <Navbar />
       <Auth/>
       <div>
-      <img className="bottom-image" src={bottom}></img>
+      <img className="bottom-image" src={bottom} alt="bottom"></img>
       </div>
     </div>
   );

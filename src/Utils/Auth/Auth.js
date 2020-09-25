@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import { Button, Col, Form, Modal, Row, Spinner } from 'react-bootstrap';
 import './Auth.css';
 import firebase from './../../firebase'
+import { Redirect } from 'react-router-dom';
 
 const Auth = () => {
     const [showLoginModal, setshowLoginModal] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [userRole, setUserRole] = useState('');
+    const [info, setInfo] = useState({});
     const [showRegisterModal, setRegisterModal] = useState(false);
 
     const openRegisterModal = () => {
@@ -51,7 +52,7 @@ const Auth = () => {
                     else {
                         await ref.set({
                             email: values.email,
-                            name: values.firstname + values.lastname,
+                            name: values.firstname +" "+ values.lastname,
                             phone: values.phone,
                             gender: values.gender,
                             status: values.status,
@@ -70,6 +71,7 @@ const Auth = () => {
     })
 
 
+
     const loginFormik = useFormik({
         initialValues: {
             userName: '',
@@ -82,13 +84,13 @@ const Auth = () => {
             await ref.get().then(
                 async doc => {
                     const data = doc.data();
-                    if (data == undefined) {
+                    if (data === undefined) {
                         window.alert("user doesn't exist");
                     }
                     else {
                         if (data.password === values.loginPassword) {
-                            window.alert("Login Success")
-                            setUserRole(data.role);
+                            setLoading(true);
+                            setInfo(data)
                         }
                         else {
                             window.alert("Invalid Credentials")
@@ -98,6 +100,31 @@ const Auth = () => {
             )
         }
     })
+    if (info.role === 'admin') {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/admin',
+                    state: {
+                        Info: info
+                    }
+                }}
+
+            ></Redirect>
+        )
+    }
+    else if(info.role === 'user') {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/userdetails',
+                    state: {
+                        Info: info
+                    }
+                }}
+            ></Redirect>
+        )
+    }
 
 
 
