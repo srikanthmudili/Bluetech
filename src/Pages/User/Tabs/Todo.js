@@ -42,9 +42,7 @@ const Todo = (props) => {
                             )
                         }
                     </div>
-                ) : <div>
-                        <h5>No courses taken</h5>
-                    </div>
+                ) : null
             }
         </div>
     );

@@ -11,7 +11,7 @@ const Navbar = (props) => {
         <div className="Navbar">
             <nav className="navbar">
                 <span className="navbar-text">
-                    Bluetech
+                    Bluetech {props.admin}
                 </span>
 
                 {

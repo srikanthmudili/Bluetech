@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { Button, Col, Form, Modal, Row, Spinner } from 'react-bootstrap';
 import './Auth.css';
-import firebase from './../../firebase'
+import firebase from './../../firebase';
 import { Redirect } from 'react-router-dom';
 
 const Auth = () => {
@@ -16,8 +16,7 @@ const Auth = () => {
     };
     const handleRegisterClose = () => {
         setRegisterModal(false);
-    }
-
+    };
 
     const openLoginModal = () => {
         setshowLoginModal(true);
@@ -25,7 +24,6 @@ const Auth = () => {
     const handleLoginClose = () => {
         setshowLoginModal(false);
     };
-
 
     const registerFormik = useFormik({
         initialValues: {
@@ -36,23 +34,21 @@ const Auth = () => {
             gender: '',
             status: '',
             organisation: '',
-            password: '',
-
+            password: ''
         },
         onSubmit: async (values) => {
             console.log(values);
             var ref = await firebase.firestore().collection('users').doc(values.email);
 
-            await ref.get().then(
-                async doc => {
-                    const data = doc.data();
-                    if (data !== undefined) {
-                        window.alert("User Already Exist! Please Login")
-                    }
-                    else {
-                        await ref.set({
+            await ref.get().then(async (doc) => {
+                const data = doc.data();
+                if (data !== undefined) {
+                    window.alert('User Already Exist! Please Login');
+                } else {
+                    await ref
+                        .set({
                             email: values.email,
-                            name: values.firstname + " " + values.lastname,
+                            name: values.firstname + ' ' + values.lastname,
                             phone: values.phone,
                             gender: values.gender,
                             status: values.status,
@@ -61,18 +57,12 @@ const Auth = () => {
                             role: 'user',
                             time_stamp: firebase.firestore.FieldValue.serverTimestamp(),
                             os: null
-                        }).then(() =>
-                            handleRegisterClose(),
-                            window.alert("account created"))
-                            ;
-                    }
+                        })
+                        .then(() => handleRegisterClose(), window.alert('account created'));
                 }
-            )
-
+            });
         }
-    })
-
-
+    });
 
     const loginFormik = useFormik({
         initialValues: {
@@ -80,28 +70,26 @@ const Auth = () => {
             loginPassword: ''
         },
         onSubmit: async (values) => {
+            setLoading(true);
             console.log(values);
             var ref = await firebase.firestore().collection('users').doc(values.userName);
 
-            await ref.get().then(
-                async doc => {
-                    const data = doc.data();
-                    if (data === undefined) {
-                        window.alert("user doesn't exist");
-                    }
-                    else {
-                        if (data.password === values.loginPassword) {
-                            setLoading(true);
-                            setInfo(data)
-                        }
-                        else {
-                            window.alert("Invalid Credentials")
-                        }
+            await ref.get().then(async (doc) => {
+                const data = doc.data();
+                if (data === undefined) {
+                    window.alert("user doesn't exist");
+                } else {
+                    if (data.password === values.loginPassword) {
+                        setLoading(false);
+                        setInfo(data);
+                    } else {
+                        window.alert('Invalid Credentials');
                     }
                 }
-            )
+            });
+            // setLoading(false);
         }
-    })
+    });
     if (info.role === 'admin') {
         return (
             <Redirect
@@ -111,11 +99,9 @@ const Auth = () => {
                         Info: info
                     }
                 }}
-
-            ></Redirect>
-        )
-    }
-    else if (info.role === 'user') {
+            />
+        );
+    } else if (info.role === 'user') {
         return (
             <Redirect
                 to={{
@@ -124,8 +110,8 @@ const Auth = () => {
                         Info: info
                     }
                 }}
-            ></Redirect>
-        )
+            />
+        );
     }
 
 
@@ -133,20 +119,20 @@ const Auth = () => {
     return (
         <div>
 
-            {loading ? (
-                <div style={{ display: 'flex', justifyContent: 'center', verticalAlign: 'middle' }}>
-                    <Spinner animation="border" size={50} color="#0A79DF" />
-                </div>
-            ) : (
-                    <div />
-                )}{' '}
+
 
 
             <Modal show={showLoginModal} onHide={handleLoginClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header><h3>Enter Login Credentials</h3></Modal.Header>
                 <Form onSubmit={loginFormik.handleSubmit} >
                     <Modal.Body>
-
+                        {loading ? (
+                            <div style={{ display: 'flex', justifyContent: 'center', verticalAlign: 'middle' }}>
+                                <Spinner animation="border" size={50} color="#0A79DF" />
+                            </div>
+                        ) : (
+                                <div />
+                            )}{' '}
                         <Form.Group>
                             <Form.Label >Username : </Form.Label>
                             <Form.Control
