@@ -2,8 +2,10 @@ import React from 'react';
 import { Button, Card } from 'react-bootstrap';
 import './Tab.css'
 
+
 const Todo = (props) => {
- 
+
+
     return (
         <div>
             {
@@ -11,7 +13,7 @@ const Todo = (props) => {
                     <div className="Card">
                         {
                             props.courses.map(
-                                (obj,i) => (
+                                (obj, i) => (
                                     <Card key={obj.course_id} className="Card">
                                         <Card.Header>{obj.course_name}</Card.Header>
                                         <Card.Body className="col">
@@ -22,17 +24,17 @@ const Todo = (props) => {
                                                     obj.is_attempted ? (
                                                         "success"
                                                     ) : (
-                                                        "warning"
-                                                    )
-                                                }  size="sm">{
-                                                    obj.is_attempted ? (
-                                                        <div>
-                                                            To be Completed
-                                                        </div>
-                                                    ) : (<div>
-                                                        Yet to Start
-                                                    </div>)
-                                                }</Button>
+                                                            "warning"
+                                                        )
+                                                } size="sm">{
+                                                        obj.is_attempted ? (
+                                                            <div>
+                                                                To be Completed
+                                                            </div>
+                                                        ) : (<div>
+                                                            Yet to Start
+                                                        </div>)
+                                                    }</Button>
                                             </div>
                                         </Card.Body>
                                     </Card>
@@ -40,10 +42,13 @@ const Todo = (props) => {
                             )
                         }
                     </div>
-                ) : null
+                ) : <div>
+                        <h5>No courses taken</h5>
+                    </div>
             }
         </div>
     );
+    
 };
 
 export default Todo;

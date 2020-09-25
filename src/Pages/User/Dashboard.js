@@ -28,6 +28,7 @@ const Dashboard = (props) => {
 
         [props.location.state.Info]
     );
+    console.log(userCourses)
     const time = (new Date(props.location.state.Info.time_stamp.seconds * 1000));
 
     return (
@@ -35,25 +36,31 @@ const Dashboard = (props) => {
 
             <Navbar title={userInfo.name} username={userInfo.email} logoutButton={true} />
             <br></br>
-            <Tabs defaultActiveKey="todo" id="uncontrolled-tab-example">
-                <Tab eventKey="todo" title="To-Do">
-                    <Todo courses={userCourses["todo"]} />
-                </Tab>
-                <Tab eventKey="Attempted" title="Attempted">
-                    <Attempted courses={userCourses["attempted"]} />
-                </Tab>
-                <Tab eventKey="completed" title="Completed">
-                    <Completed courses={userCourses["completed"]} />
-                </Tab>
-                <Tab eventKey="log" title="Log Details">
-                    <div style={{ marginTop: '5%', color: "#45CE30", textAlign: "center" }} className="justify-content-center">
-                        <p>Last Login: {userInfo.os}</p>
-                        <p>Logout time: {time.toTimeString()}</p>
-                        <p>Logout date: {time.toDateString()}</p>
-                    </div>
-                </Tab>
+            {(userCourses['attempted']) ? (
+                <div style={{ marginTop: '5%', color: "#45CE30", textAlign: "center" }} className="justify-content-center">
+                    <h5>No courses taken</h5>
+                </div>
+            ) : (
+                    <Tabs defaultActiveKey="todo" id="uncontrolled-tab-example">
+                        <Tab eventKey="todo" title="To-Do">
+                            <Todo courses={userCourses["todo"]} />
+                        </Tab>
+                        <Tab eventKey="Attempted" title="Attempted">
+                            <Attempted courses={userCourses["attempted"]} />
+                        </Tab>
+                        <Tab eventKey="completed" title="Completed">
+                            <Completed courses={userCourses["completed"]} />
+                        </Tab>
+                        <Tab eventKey="log" title="Log Details">
+                            <div style={{ marginTop: '5%', color: "#45CE30", textAlign: "center" }} className="justify-content-center">
+                                <p>Last Login: {userInfo.os}</p>
+                                <p>Logout time: {time.toTimeString()}</p>
+                                <p>Logout date: {time.toDateString()}</p>
+                            </div>
+                        </Tab>
 
-            </Tabs>
+                    </Tabs>
+                )}
 
         </div>
     );

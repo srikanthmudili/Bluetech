@@ -3,6 +3,7 @@ import { Card } from 'react-bootstrap';
 import './Tab.css'
 
 const Completed = (props) => {
+    
     return (
         <div>
             {
@@ -26,6 +27,11 @@ const Completed = (props) => {
             }
         </div>
     );
+    if (!props.taken)
+        return (
+            <div style={{ marginTop: '5%', color: "#45CE30", textAlign: "center" }} className="justify-content-center">
+                <h5>No courses taken</h5>
+            </div>)
 };
 
 export default Completed;

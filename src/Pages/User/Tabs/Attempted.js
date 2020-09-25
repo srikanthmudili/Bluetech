@@ -4,6 +4,7 @@ import './Tab.css'
 
 
 const Attempted = (props) => {
+
     return (
         <div>
             <div>
@@ -16,7 +17,7 @@ const Attempted = (props) => {
                                         <Card key={obj.course_id} className="Card">
                                             <Card.Header>{obj.course_name}</Card.Header>
                                             <Card.Body >
-                                                <h6 style={{marginLeft:'33%', color: '#EA425C'}} >To be completed before or on {obj.due_date}</h6>
+                                                <h6 style={{ marginLeft: '33%', color: '#EA425C' }} >To be completed before or on {obj.due_date}</h6>
                                             </Card.Body>
                                         </Card>
                                     )
@@ -28,6 +29,7 @@ const Attempted = (props) => {
             </div>
         </div>
     );
+    
 };
 
 export default Attempted;

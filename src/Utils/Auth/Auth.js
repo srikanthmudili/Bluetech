@@ -52,13 +52,15 @@ const Auth = () => {
                     else {
                         await ref.set({
                             email: values.email,
-                            name: values.firstname +" "+ values.lastname,
+                            name: values.firstname + " " + values.lastname,
                             phone: values.phone,
                             gender: values.gender,
                             status: values.status,
                             organisation: values.organisation,
                             password: values.password,
-                            role: 'user'
+                            role: 'user',
+                            time_stamp: firebase.firestore.FieldValue.serverTimestamp(),
+                            os: null
                         }).then(() =>
                             handleRegisterClose(),
                             window.alert("account created"))
@@ -113,7 +115,7 @@ const Auth = () => {
             ></Redirect>
         )
     }
-    else if(info.role === 'user') {
+    else if (info.role === 'user') {
         return (
             <Redirect
                 to={{

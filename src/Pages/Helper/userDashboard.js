@@ -29,8 +29,8 @@ const allCourses = async (username) => {
             attempted.push(doc.data());
         });
     });
-
-    return { todo , completed , attempted };
+    
+    return { todo, completed, attempted };
 }
 
 
